@@ -1,9 +1,24 @@
-import { useSetTheme, useTheme } from '@atlaskit/app-provider';
+import { useColorMode, useSetColorMode } from '@atlaskit/app-provider';
+import { IconButton } from '@atlaskit/button/new';
+import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs';
 
 export default function ThemeSwitcher() {
-  const theme = useTheme();
-  const setTheme = useSetTheme();
-  console.log(theme);
+  const colorMode = useColorMode();
+  const setColorMode = useSetColorMode();
 
-  return <div onClick={() => setTheme({ light: 'light' })}></div>;
+  const isDark = colorMode === 'dark';
+
+  return (
+    <IconButton
+      onClick={() => setColorMode(colorMode === 'dark' ? 'light' : 'dark')}
+      icon={() =>
+        isDark ? (
+          <BsSunFill className='size-4' />
+        ) : (
+          <BsFillMoonStarsFill className='size-4' />
+        )
+      }
+      label='Switch theme'
+    />
+  );
 }

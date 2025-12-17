@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "@atlaskit/app-provider": "^3.2.8",
+    "@atlaskit/avatar": "^25.6.2",
     "@atlaskit/banner": "^14.0.19",
     "@atlaskit/button": "^23.8.0",
+    "@atlaskit/dropdown-menu": "^16.3.25",
     "@atlaskit/dynamic-table": "^18.3.10",
     "@atlaskit/heading": "^5.2.14",
+    "@atlaskit/icon": "^29.3.0",
     "@atlaskit/navigation-system": "^5.12.0",
     "@atlaskit/textfield": "^8.2.0",
     "@tailwindcss/vite": "^4.1.18",
@@ -23,6 +26,7 @@
     "add": "^2.0.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-icons": "^5.5.0",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {

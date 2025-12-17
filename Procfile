@@ -1,1 +1,1 @@
-web: bun --bun run start 
+web: bun --bun run start

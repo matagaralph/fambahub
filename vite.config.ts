@@ -13,4 +13,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  preview: {
+    allowedHosts: ['fambahub.com'],
+  },
 });

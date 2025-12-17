@@ -1,0 +1,46 @@
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme inline {
+  --font-sans: 'Atlassian Sans', 'Inter', system-ui, sans-serif;
+  --border-color-default: var(--borderColor-default);
+}
+
+@custom-variant dark (&:where([data-color-mode="dark"], [data-color-mode="dark"] *));
+
+@layer base {
+  :root {
+    --borderColor-default: oklch(0.8812 0.013 244.27);
+  }
+
+  [data-color-mode='dark'] {
+    --borderColor-default: oklch(0.3837 0.0179 254.74);
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+}
+
+@font-face {
+  font-family: 'Atlassian Sans';
+  src: url('./assets/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Atlassian Sans';
+  src: url('./assets/InterVariable-Italic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+}

@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as SiteIndexRouteImport } from './routes/_site/index'
+import { Route as SitePrivacyPolicyRouteImport } from './routes/_site/privacy-policy'
+import { Route as SiteBrandRouteImport } from './routes/_site/brand'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -21,24 +23,45 @@ const SiteIndexRoute = SiteIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SiteRoute,
 } as any)
+const SitePrivacyPolicyRoute = SitePrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteBrandRoute = SiteBrandRouteImport.update({
+  id: '/brand',
+  path: '/brand',
+  getParentRoute: () => SiteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/brand': typeof SiteBrandRoute
+  '/privacy-policy': typeof SitePrivacyPolicyRoute
   '/': typeof SiteIndexRoute
 }
 export interface FileRoutesByTo {
+  '/brand': typeof SiteBrandRoute
+  '/privacy-policy': typeof SitePrivacyPolicyRoute
   '/': typeof SiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
+  '/_site/brand': typeof SiteBrandRoute
+  '/_site/privacy-policy': typeof SitePrivacyPolicyRoute
   '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/brand' | '/privacy-policy' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_site' | '/_site/'
+  to: '/brand' | '/privacy-policy' | '/'
+  id:
+    | '__root__'
+    | '/_site'
+    | '/_site/brand'
+    | '/_site/privacy-policy'
+    | '/_site/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -61,14 +84,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteIndexRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/privacy-policy': {
+      id: '/_site/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof SitePrivacyPolicyRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/brand': {
+      id: '/_site/brand'
+      path: '/brand'
+      fullPath: '/brand'
+      preLoaderRoute: typeof SiteBrandRouteImport
+      parentRoute: typeof SiteRoute
+    }
   }
 }
 
 interface SiteRouteChildren {
+  SiteBrandRoute: typeof SiteBrandRoute
+  SitePrivacyPolicyRoute: typeof SitePrivacyPolicyRoute
   SiteIndexRoute: typeof SiteIndexRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
+  SiteBrandRoute: SiteBrandRoute,
+  SitePrivacyPolicyRoute: SitePrivacyPolicyRoute,
   SiteIndexRoute: SiteIndexRoute,
 }
 

@@ -165,6 +165,15 @@ function PrivacyPolicy() {
                 purposes, you may refer to the relevant sections of this
                 document.
               </p>
+              <h2 className='line-y py-2'>How to exercise these rights</h2>
+              <p>
+                Any requests to exercise user rights may be directed to our help
+                center by email at{' '}
+                <a href='mailto:support@fambahub.com'>support@fambahub.com</a>.
+                Requests are handled free of charge and will be addressed by the
+                Owner as soon as possible and no later than one month from
+                receipt.
+              </p>
               <h2>Notice on Financial Incentives</h2>
               <p>
                 We may collect your personal information in connection with
@@ -202,15 +211,6 @@ function PrivacyPolicy() {
                 limitation, the expenses we incur from collecting your personal
                 information and/or providing the promotions to you, and/or the
                 revenue generated through the promotions.
-              </p>
-              <h2 className='line-y py-2'>How to exercise these rights</h2>
-              <p>
-                Any requests to exercise user rights may be directed to our help
-                center by email at{' '}
-                <a href='mailto:support@fambahub.com'>support@fambahub.com</a>.
-                Requests are handled free of charge and will be addressed by the
-                Owner as soon as possible and no later than one month from
-                receipt.
               </p>
               <h2 className='py-2'>
                 Global Cross Border Privacy Rules System Participation

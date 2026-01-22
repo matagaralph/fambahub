@@ -9,6 +9,7 @@ import {
 } from '@tanstack/react-router';
 import * as React from 'react';
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
+import { Header } from '~/components/header';
 import { NotFound } from '~/components/NotFound';
 import appCss from '~/styles/app.css?url';
 import { seo } from '~/utils/seo';
@@ -87,7 +88,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ThemeProvider preventSSRMismatch>
-          <BaseStyles>{children}</BaseStyles>
+          <BaseStyles>
+            <>
+              <Header />
+              {children}
+            </>
+          </BaseStyles>
         </ThemeProvider>
         {/* <TanStackRouterDevtools position='bottom-right' />
         <ReactQueryDevtools buttonPosition='bottom-left' /> */}

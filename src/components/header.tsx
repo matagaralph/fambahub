@@ -1,4 +1,4 @@
-import { Avatar } from '@primer/react';
+import { ActionList, ActionMenu, Avatar, Button } from '@primer/react';
 import { Link } from '@tanstack/react-router';
 import { Icons } from './icons';
 
@@ -25,7 +25,8 @@ export function Header() {
             >
               Blog
             </a>
-            <a
+            {/* <Button>Register</Button> */}
+            {/* <a
               href='/plus?ref=top'
               className='group relative px-1.5 text-sm/6 text-sky-800'
             >
@@ -63,8 +64,17 @@ export function Header() {
               >
                 <path d='M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z' />
               </svg>
-            </a>
-            <Avatar src='/avatar.png' size={28} />
+            </a> */}
+            <ActionMenu>
+              <ActionMenu.Anchor>
+                <Avatar src='/avatar.png' size={28} />
+              </ActionMenu.Anchor>
+              <ActionMenu.Overlay className='rounded-md!'>
+                <ActionList className='z-50!'>
+                  <ActionList.Item>Sign In</ActionList.Item>
+                </ActionList>
+              </ActionMenu.Overlay>
+            </ActionMenu>
           </div>
           <div className='flex items-center gap-2.5 md:hidden'>
             <button

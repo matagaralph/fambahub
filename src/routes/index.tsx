@@ -38,49 +38,68 @@ const perks = [
 function Home() {
   return (
     <>
-      <main className='max-w-7xl mx-auto px-4 pt-8'>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos amet
-          omnis, cupiditate magni iure voluptatem inventore perferendis placeat
-          soluta error aliquam unde accusantium illum, dolorem, sit repellendus
-          recusandae quas excepturi!
-        </Text>
-      </main>
-      <section
-        aria-labelledby='perks-heading'
-        className='border-t border-gray-200 bg-gray-50'
-      >
-        <h2 id='perks-heading' className='sr-only'>
-          Our perks
-        </h2>
+      <section className='relative h-150 w-full overflow-hidden font-sans'>
+        <img
+          src='https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1'
+          alt='Travel landscape'
+          className='absolute inset-0 h-full w-full object-cover'
+        />
+        <div className='absolute inset-0 bg-black/30' />
 
-        <div className='mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8'>
-          <div className='grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-0'>
-            {perks.map((perk) => (
-              <div
-                key={perk.name}
-                className='text-center md:flex md:items-start md:text-left lg:block lg:text-center'
+        <div className='relative flex h-full flex-col items-center justify-center px-4 text-center text-white'>
+          <h1 className='mb-4 text-5xl font-bold tracking-tight sm:text-7xl'>
+            Explore the World
+          </h1>
+          <p className='mb-10 text-lg font-medium sm:text-xl'>
+            Plan better with 300,000+ travel experiences.
+          </p>
+
+          <div className='flex w-full max-w-4xl items-center rounded-full bg-white p-2 shadow-2xl'>
+            <div className='flex flex-1 flex-col items-start px-6 py-2 text-left'>
+              <label className='text-sm font-bold text-gray-900'>
+                Where to?
+              </label>
+              <input
+                type='text'
+                placeholder='Search for a place or activity'
+                className='w-full bg-transparent text-gray-600 outline-none placeholder:text-gray-400'
+              />
+            </div>
+
+            <div className='h-10 w-px bg-gray-200' />
+
+            <div className='flex flex-1 flex-col items-start px-6 py-2 text-left'>
+              <label className='text-sm font-bold text-gray-900'>When</label>
+              <input
+                type='text'
+                placeholder='Select Dates'
+                className='w-full bg-transparent text-gray-600 outline-none placeholder:text-gray-400'
+              />
+            </div>
+
+            <button className='flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#008768] transition-colors hover:bg-[#007056]'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={2.5}
+                stroke='currentColor'
+                className='h-6 w-6'
               >
-                <div className='md:flex-shrink-0'>
-                  <div className='flow-root'>
-                    <img
-                      className='-my-1 mx-auto h-24 w-auto'
-                      src={perk.imageUrl}
-                      alt=''
-                    />
-                  </div>
-                </div>
-                <div className='mt-6 md:ml-4 md:mt-0 lg:ml-0 lg:mt-6'>
-                  <h3 className='text-base font-medium text-gray-900'>
-                    {perk.name}
-                  </h3>
-                  <p className='mt-3 text-sm text-gray-500'>
-                    {perk.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
+                />
+              </svg>
+            </button>
           </div>
+
+          {/* <div className='mt-12 flex gap-3'>
+            <span className='h-3 w-3 rounded-full bg-white' />
+            <span className='h-3 w-3 rounded-full border-2 border-white' />
+            <span className='h-3 w-3 rounded-full border-2 border-white' />
+          </div> */}
         </div>
       </section>
     </>

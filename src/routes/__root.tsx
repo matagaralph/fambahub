@@ -89,10 +89,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <ThemeProvider preventSSRMismatch>
           <BaseStyles>
-            <>
-              <Header />
-              {children}
-            </>
+            <Header />
+            {children}
           </BaseStyles>
         </ThemeProvider>
         {/* <TanStackRouterDevtools position='bottom-right' />

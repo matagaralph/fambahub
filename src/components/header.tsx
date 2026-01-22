@@ -1,5 +1,5 @@
-import { ActionList, ActionMenu, Avatar, Button } from '@primer/react';
-import { Link } from '@tanstack/react-router';
+import { ThreeBarsIcon } from '@primer/octicons-react';
+import { ActionList, ActionMenu, Avatar, IconButton } from '@primer/react';
 import { Icons } from './icons';
 
 export function Header() {
@@ -77,7 +77,7 @@ export function Header() {
             </ActionMenu>
           </div>
           <div className='flex items-center gap-2.5 md:hidden'>
-            <button
+            {/* <button
               type='button'
               aria-label='Search'
               className='inline-grid size-7 place-items-center rounded-md'
@@ -89,8 +89,10 @@ export function Header() {
                   clipRule='evenodd'
                 />
               </svg>
-            </button>
-            <button
+            </button> */}
+
+            <IconButton icon={ThreeBarsIcon} />
+            {/* <button
               type='button'
               className='relative inline-grid size-7 place-items-center rounded-md text-gray-950 hover:bg-gray-950/5 undefined'
               aria-label='Navigation'
@@ -99,7 +101,7 @@ export function Header() {
               <svg viewBox='0 0 16 16' fill='currentColor' className='size-4'>
                 <path d='M8 2a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM8 6.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM9.5 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z' />
               </svg>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

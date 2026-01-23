@@ -22,6 +22,7 @@
     'Inter-var', 'Inter', --apple-system, system-ui, sans-serif;
   --BaseStyles-fontFamily:
     'Inter-var', 'Inter', --apple-system, system-ui, sans-serif;
+  --overlay-borderRadius: 0.25rem;
   /* --fgColor-default: oklch(0.2723 0.0079 264.43); */
 }
 

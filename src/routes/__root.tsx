@@ -86,7 +86,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className='antialiased font-default'>
         <ThemeProvider preventSSRMismatch>
           <BaseStyles>
             <Header />

@@ -1,4 +1,14 @@
-import { HomeIcon, RepoIcon, ThreeBarsIcon } from '@primer/octicons-react';
+import {
+  ChevronRightIcon,
+  CommentAiIcon,
+  HeartIcon,
+  HomeIcon,
+  PaintbrushIcon,
+  PeopleIcon,
+  PersonIcon,
+  RepoIcon,
+  ThreeBarsIcon,
+} from '@primer/octicons-react';
 import {
   ActionList,
   ActionMenu,
@@ -11,6 +21,8 @@ import {
 } from '@primer/react';
 import { Icons } from './icons';
 import { useCallback, useRef, useState } from 'react';
+import { BsCurrencyDollar } from 'react-icons/bs';
+import { TbFilterDollar } from 'react-icons/tb';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +57,24 @@ export function Header() {
               </ActionMenu.Anchor>
               <ActionMenu.Overlay className='rounded-md!'>
                 <ActionList className='z-50!'>
-                  <ActionList.Item>Sign In</ActionList.Item>
+                  <ActionList.Item>
+                    <ActionList.LeadingVisual>
+                      <PersonIcon />
+                    </ActionList.LeadingVisual>
+                    Account
+                  </ActionList.Item>
+                  <ActionList.Item>
+                    <ActionList.LeadingVisual>
+                      <CommentAiIcon />
+                    </ActionList.LeadingVisual>
+                    Help Center
+                  </ActionList.Item>
+                  <ActionList.Item>
+                    <ActionList.LeadingVisual>
+                      <HeartIcon />
+                    </ActionList.LeadingVisual>
+                    Wishlist
+                  </ActionList.Item>
                 </ActionList>
               </ActionMenu.Overlay>
             </ActionMenu>
@@ -59,7 +88,7 @@ export function Header() {
             />
             {isOpen && (
               <Dialog
-                className='rounded-none!'
+                className='rounded-none! lg:hidden'
                 title=''
                 onClose={onDialogClose}
                 position='right'
@@ -71,6 +100,32 @@ export function Header() {
                   </Button>
                   <Button block>Login In</Button>
                 </Stack>
+                <div className='mt-6!'>
+                  <NavList>
+                    <NavList.Item>
+                      <NavList.LeadingVisual>
+                        <PaintbrushIcon />
+                      </NavList.LeadingVisual>
+                      Appearance
+                    </NavList.Item>
+
+                    <NavList.Item>
+                      <NavList.LeadingVisual>
+                        <CommentAiIcon />
+                      </NavList.LeadingVisual>
+                      Help Center
+                    </NavList.Item>
+                    <NavList.Item>
+                      <NavList.LeadingVisual>
+                        <TbFilterDollar />
+                      </NavList.LeadingVisual>
+                      USD
+                      <NavList.TrailingVisual>
+                        <ChevronRightIcon />
+                      </NavList.TrailingVisual>
+                    </NavList.Item>
+                  </NavList>
+                </div>
               </Dialog>
             )}
           </div>

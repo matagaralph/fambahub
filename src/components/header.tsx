@@ -1,4 +1,4 @@
-import { ThreeBarsIcon } from '@primer/octicons-react';
+import { HomeIcon, RepoIcon, ThreeBarsIcon } from '@primer/octicons-react';
 import {
   ActionList,
   ActionMenu,
@@ -6,6 +6,7 @@ import {
   Button,
   Dialog,
   IconButton,
+  NavList,
   Stack,
 } from '@primer/react';
 import { Icons } from './icons';
@@ -16,7 +17,7 @@ export function Header() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const onDialogClose = useCallback(() => setIsOpen(false), []);
   return (
-    <div className='fixed inset-x-0 top-0 z-5  border-b border-default'>
+    <div className='fixed inset-x-0 top-0  border-b border-default'>
       <div className='bg-default'>
         <div className='flex h-14 items-center justify-between gap-8 px-4 sm:px-6'>
           <div className='flex items-center gap-4 text-base font-bold'>
@@ -58,7 +59,7 @@ export function Header() {
             />
             {isOpen && (
               <Dialog
-                className='rounded-sm!'
+                className='rounded-none!'
                 title=''
                 onClose={onDialogClose}
                 position='right'

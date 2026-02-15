@@ -33,7 +33,7 @@ const heroSlides = [
           dots: 'bottom-6',
         }"
       >
-        <div class="relative w-full h-150">
+        <div class="relative w-full h-125 lg:h-112.5">
           <!-- Background Image -->
           <img
             :src="item.image"
@@ -58,7 +58,7 @@ const heroSlides = [
 
         <!-- Search Box -->
         <div
-          class="pointer-events-auto bg-white rounded-lg shadow-xl p-2 flex flex-col sm:flex-row gap-2 w-[90%] max-w-2xl"
+          class="pointer-events-auto bg-white rounded-full shadow-xl p-2 flex flex-col sm:flex-row items-center gap-2 w-[90%] max-w-xl lg:max-w-2xl"
         >
           <div class="flex-1 px-4 py-2">
             <label class="block text-sm font-semibold text-gray-700"
@@ -67,10 +67,10 @@ const heroSlides = [
             <input
               type="text"
               placeholder="Search for a place or activity"
-              class="w-full text-gray-600 bg-transparent outline-none placeholder:text-gray-400"
+              class="w-full text-gray-600 bg-transparent outline-none placeholder:text-gray-400 text-sm"
             />
           </div>
-          <div class="hidden sm:block w-px bg-gray-200" />
+          <div class="hidden sm:block w-px h-10 bg-gray-200" />
           <div class="flex-1 px-4 py-2">
             <label class="block text-sm font-semibold text-gray-700"
               >When</label
@@ -78,14 +78,13 @@ const heroSlides = [
             <input
               type="text"
               placeholder="Select Dates"
-              class="w-full text-gray-600 bg-transparent outline-none placeholder:text-gray-400"
+              class="w-full text-gray-600 bg-transparent outline-none placeholder:text-gray-400 text-sm"
             />
           </div>
           <UButton
             icon="i-lucide-search"
-            size="xl"
             color="primary"
-            class="rounded-lg"
+            class="rounded-full !p-3 shrink-0"
             aria-label="Search"
           />
         </div>

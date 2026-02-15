@@ -40,6 +40,8 @@ const allDestinations = ref<Destination[]>([]);
 const isLoading = ref(false);
 const isPopoverOpen = ref(false);
 const selectedDestination = ref<Destination | null>(null);
+const highlightedIndex = ref(-1);
+const isSearchFocused = ref(false);
 
 // Fetch all destinations once on mount
 const fetchDestinations = async () => {
@@ -73,19 +75,60 @@ const filteredDestinations = computed(() => {
   const query = searchQuery.value.toLowerCase();
   return allDestinations.value
     .filter((d) => d.name.toLowerCase().includes(query))
-    .slice(0, 10); // Limit to 10 results for performance
+    .slice(0, 7);
 });
 
 const onSearchInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
   searchQuery.value = target.value;
   isPopoverOpen.value = searchQuery.value.length >= 2;
+  highlightedIndex.value = -1;
 };
 
 const onSearchFocus = () => {
+  isSearchFocused.value = true;
   fetchDestinations();
   if (searchQuery.value.length >= 2) {
     isPopoverOpen.value = true;
+  }
+};
+
+const onSearchBlur = () => {
+  isSearchFocused.value = false;
+  // Delay closing to allow click on results
+  setTimeout(() => {
+    if (!isSearchFocused.value) {
+      isPopoverOpen.value = false;
+    }
+  }, 200);
+};
+
+const onKeyDown = (event: KeyboardEvent) => {
+  const results = filteredDestinations.value;
+  if (!results.length) return;
+
+  switch (event.key) {
+    case "ArrowDown":
+      event.preventDefault();
+      highlightedIndex.value = (highlightedIndex.value + 1) % results.length;
+      break;
+    case "ArrowUp":
+      event.preventDefault();
+      highlightedIndex.value =
+        highlightedIndex.value <= 0
+          ? results.length - 1
+          : highlightedIndex.value - 1;
+      break;
+    case "Enter":
+      event.preventDefault();
+      const selected = results[highlightedIndex.value];
+      if (selected) {
+        selectDestination(selected);
+      }
+      break;
+    case "Escape":
+      isPopoverOpen.value = false;
+      break;
   }
 };
 
@@ -93,6 +136,7 @@ const selectDestination = (destination: Destination) => {
   selectedDestination.value = destination;
   searchQuery.value = destination.name;
   isPopoverOpen.value = false;
+  highlightedIndex.value = -1;
 };
 
 const getDestinationIcon = (type: string) => {
@@ -106,6 +150,14 @@ const getDestinationIcon = (type: string) => {
     default:
       return "i-lucide-compass";
   }
+};
+
+const getParentName = (destination: Destination) => {
+  if (!destination.parentDestinationId) return destination.type;
+  const parent = allDestinations.value.find(
+    (d) => d.destinationId === destination.parentDestinationId,
+  );
+  return parent?.name || destination.type;
 };
 </script>
 
@@ -151,7 +203,7 @@ const getDestinationIcon = (type: string) => {
       <!-- Search Box -->
       <div class="pointer-events-auto w-[90%] max-w-xl lg:max-w-2xl relative">
         <div
-          class="bg-white rounded-full shadow-xl p-2 flex flex-col sm:flex-row items-center gap-1"
+          class="bg-white rounded-full p-2 flex flex-col sm:flex-row items-center gap-1 shadow-xl"
         >
           <div class="flex-1 px-4 py-1 w-full">
             <label class="block text-sm font-semibold text-neutral-700"
@@ -164,6 +216,8 @@ const getDestinationIcon = (type: string) => {
               class="w-full text-neutral-600 bg-transparent outline-none placeholder:text-neutral-400 text-sm"
               @input="onSearchInput"
               @focus="onSearchFocus"
+              @blur="onSearchBlur"
+              @keydown="onKeyDown"
             />
           </div>
 
@@ -189,7 +243,7 @@ const getDestinationIcon = (type: string) => {
         <!-- Dropdown Results -->
         <div
           v-if="isPopoverOpen"
-          class="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-xl max-h-80 overflow-y-auto z-50"
+          class="absolute top-full left-0 right-0 mt-1 bg-white rounded-2xl shadow-xl z-50"
         >
           <div class="py-2">
             <!-- Loading state -->
@@ -202,25 +256,38 @@ const getDestinationIcon = (type: string) => {
 
             <!-- Results -->
             <template v-else>
-              <button
-                v-for="destination in filteredDestinations"
+              <template
+                v-for="(destination, index) in filteredDestinations"
                 :key="destination.destinationId"
-                class="w-full flex items-center gap-3 px-4 py-3 hover:bg-neutral-100 transition-colors text-left"
-                @click="selectDestination(destination)"
               >
-                <UIcon
-                  :name="getDestinationIcon(destination.type)"
-                  class="text-primary size-5 shrink-0"
+                <div
+                  v-if="index > 0"
+                  class="mx-4 border-t border-neutral-100"
                 />
-                <div class="min-w-0">
-                  <p class="text-sm font-medium text-neutral-900 truncate">
-                    {{ destination.name }}
-                  </p>
-                  <p class="text-xs text-neutral-500 truncate">
-                    {{ destination.type }}
-                  </p>
-                </div>
-              </button>
+                <button
+                  :class="[
+                    'w-full flex items-center gap-3 px-4 py-3 transition-colors text-left',
+                    highlightedIndex === index
+                      ? 'bg-neutral-100'
+                      : 'hover:bg-neutral-100',
+                  ]"
+                  @click="selectDestination(destination)"
+                  @mouseenter="highlightedIndex = index"
+                >
+                  <UIcon
+                    :name="getDestinationIcon(destination.type)"
+                    class="text-primary size-5 shrink-0"
+                  />
+                  <div class="min-w-0">
+                    <p class="text-sm font-medium text-neutral-900 truncate">
+                      {{ destination.name }}
+                    </p>
+                    <p class="text-xs text-neutral-500 truncate">
+                      {{ getParentName(destination) }}
+                    </p>
+                  </div>
+                </button>
+              </template>
 
               <!-- Search for query -->
               <button

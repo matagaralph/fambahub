@@ -29,6 +29,7 @@ const heroSlides = [
       :ui="{
         item: 'basis-full',
         dots: 'bottom-6',
+        dot: 'bg-white/50 data-[state=active]:bg-white',
       }"
     >
       <div class="relative w-full h-125 lg:h-112.5">
@@ -56,33 +57,33 @@ const heroSlides = [
 
       <!-- Search Box -->
       <div
-        class="pointer-events-auto bg-white rounded-full shadow-xl p-2 flex flex-col sm:flex-row items-center gap-2 w-[90%] max-w-xl lg:max-w-2xl"
+        class="pointer-events-auto bg-white rounded-full shadow-xl p-1.5 flex flex-col sm:flex-row items-center gap-1 w-[90%] max-w-xl lg:max-w-2xl"
       >
-        <div class="flex-1 px-4 py-2">
-          <label class="block text-sm font-semibold text-gray-700"
+        <div class="flex-1 px-4 py-1">
+          <label class="block text-sm font-semibold text-neutral-700"
             >Where to?</label
           >
           <input
             type="text"
             placeholder="Search for a place or activity"
-            class="w-full text-gray-600 bg-transparent outline-none placeholder:text-gray-400 text-sm"
+            class="w-full text-neutral-600 bg-transparent outline-none placeholder:text-neutral-400 text-sm"
           />
         </div>
-        <div class="hidden sm:block w-px h-10 bg-gray-200" />
-        <div class="flex-1 px-4 py-2">
-          <label class="block text-sm font-semibold text-gray-700"
+        <div class="hidden sm:block w-px h-8 bg-neutral-200" />
+        <div class="flex-1 px-4 py-1">
+          <label class="block text-sm font-semibold text-neutral-700"
             >When</label
           >
           <input
             type="text"
             placeholder="Select Dates"
-            class="w-full text-gray-600 bg-transparent outline-none placeholder:text-gray-400 text-sm"
+            class="w-full text-neutral-600 bg-transparent outline-none placeholder:text-neutral-400 text-sm"
           />
         </div>
         <UButton
           icon="i-lucide-search"
           color="primary"
-          class="rounded-full !p-3 shrink-0"
+          class="rounded-full p-2.5! shrink-0"
           aria-label="Search"
         />
       </div>

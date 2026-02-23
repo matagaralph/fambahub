@@ -62,7 +62,7 @@ function onKeydown(e: KeyboardEvent) {
 <template>
   <div ref="popoverRef">
     <UPopover v-model:open="showResults" :dismissible="false" :portal="false"
-      :content="{ side: 'bottom', align: 'center', sideOffset: 4 }"
+      :content="{ side: 'bottom', align: 'center', sideOffset: 4, avoidCollisions: false }"
       :ui="{ content: 'w-(--reka-popper-anchor-width) p-0 rounded-lg' }">
       <template #anchor>
         <div class="w-[85vw] max-w-xl lg:max-w-2xl pointer-events-auto">

@@ -53,10 +53,10 @@ const isBestSeller = computed(() => hasFlag("BEST_SELLER"));
 
 <template>
   <div
-    class="group flex flex-col bg-white border border-neutral-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full relative cursor-pointer">
-    <NuxtLink :to="productLink" class="relative aspect-3/2 overflow-hidden bg-neutral-100 block">
+    class="group flex flex-col bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full relative cursor-pointer">
+    <NuxtLink :to="productLink" class="relative aspect-3/2 overflow-hidden bg-slate-100 block">
       <img v-if="coverImage" :src="coverImage" :alt="product.title"
-        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
 
       <div class="absolute top-3 left-0 flex flex-col gap-1">
         <div v-if="isLikelyToSellOut"
@@ -79,39 +79,39 @@ const isBestSeller = computed(() => hasFlag("BEST_SELLER"));
     </NuxtLink>
 
     <NuxtLink :to="productLink" class="p-3 flex flex-col flex-1 gap-0.5">
-      <h3 class="font-bold text-neutral-900 text-[17px] leading-snug line-clamp-2">
+      <h3 class=" text-slate-900 text-base leading-snug line-clamp-2">
         {{ product.title }}
       </h3>
 
       <div v-if="reviewCount > 0" class="flex items-center gap-1 mt-1.5">
         <div class="flex">
           <UIcon v-for="i in 5" :key="i" name="i-lucide-star" class="size-3.5"
-            :class="i <= Math.round(rating) ? 'text-amber-400' : 'text-neutral-300'" />
+            :class="i <= Math.round(rating) ? 'text-amber-400' : 'text-slate-300'" />
         </div>
-        <span class="text-xs text-neutral-600 flex items-center gap-1">
-          <span class="font-semibold text-neutral-900">{{
+        <span class="text-xs text-slate-600 flex items-center gap-1">
+          <span class="font-semibold text-slate-900">{{
             rating.toFixed(1)
             }}</span>
-          <UIcon name="i-lucide-dot" class="size-3.5 text-neutral-400" />
-          <span class="text-neutral-500">{{ reviewCount.toLocaleString() }} reviews</span>
+          <UIcon name="i-lucide-dot" class="size-3.5 text-slate-400" />
+          <span class="text-slate-500">{{ reviewCount.toLocaleString() }} reviews</span>
         </span>
       </div>
 
-      <div v-if="durationText" class="mt-2 flex items-center gap-1 text-xs text-neutral-600">
-        <UIcon name="i-lucide-clock" class="size-3.5 text-neutral-400" />
+      <div v-if="durationText" class="mt-2 flex items-center gap-1 text-xs text-slate-600">
+        <UIcon name="i-lucide-clock" class="size-3.5 text-slate-600" />
         <span>{{ durationText }}</span>
       </div>
 
       <div class="flex flex-col gap-1 mt-1.5">
-        <div class="flex items-center gap-1.5 text-xs text-green-600">
-          <UIcon name="i-lucide-check" class="size-3.5" />
+        <div class="flex items-center gap-1.5 text-xs text-slate-600">
+          <UIcon name="i-lucide-check-circle" class="size-3.5" />
           <span>Free Cancellation</span>
         </div>
-        <p class="text-sm text-neutral-600 mt-1">
+        <p class="text-sm text-slate-600 mt-1">
           from
-          <span v-if="isSpecialOffer && formattedOldPrice" class="line-through text-neutral-400 mr-1">{{
+          <span v-if="isSpecialOffer && formattedOldPrice" class="line-through text-red-600 mr-1">{{
             formattedOldPrice }}</span>
-          <span class="font-bold text-base" :class="isSpecialOffer ? 'text-red-600' : 'text-neutral-900'">{{
+          <span class="font-bold text-base text-slate-900">{{
             formattedPrice }}</span>
         </p>
       </div>

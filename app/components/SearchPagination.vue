@@ -16,7 +16,7 @@ const emit = defineEmits<{
       <UIcon name="i-lucide-chevron-left" class="size-4" />
       Previous
     </UButton>
-    <span class="text-sm font-medium text-neutral-700">Page {{ page }}</span>
+    <span class="text-sm font-medium text-slate-700">Page {{ page }}</span>
     <UButton :disabled="!hasNextPage" variant="outline" color="neutral" class="gap-1 rounded-full"
       @click="emit('next')">
       Next

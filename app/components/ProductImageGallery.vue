@@ -79,7 +79,7 @@ onUnmounted(() => {
         <button v-for="(img, i) in visibleThumbnails" :key="i"
           class="relative rounded-lg overflow-hidden aspect-4/3 border-2 transition-colors" :class="activeIndex === i
             ? 'border-primary-500'
-            : 'border-transparent hover:border-neutral-300'
+            : 'border-transparent hover:border-slate-300'
             " @click="selectImage(i)">
           <img :src="thumbnailUrl(img)" :alt="img.caption || `Image ${i + 1}`" class="w-full h-full object-cover"
             loading="lazy">
@@ -92,7 +92,7 @@ onUnmounted(() => {
         </button>
       </div>
 
-      <div class="relative flex-1 rounded-xl overflow-hidden bg-neutral-100 aspect-3/2 cursor-pointer"
+      <div class="relative flex-1 rounded-xl overflow-hidden bg-slate-100 aspect-3/2 cursor-pointer"
         @click="openLightbox()">
         <img v-if="mainImageUrl" :src="mainImageUrl" :alt="activeImage?.caption || 'Product image'"
           class="w-full h-full object-cover">
@@ -100,20 +100,20 @@ onUnmounted(() => {
         <button
           class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center hover:bg-white transition-colors"
           @click.stop="prevImage">
-          <UIcon name="i-lucide-chevron-left" class="size-5 text-neutral-700" />
+          <UIcon name="i-lucide-chevron-left" class="size-5 text-slate-700" />
         </button>
 
         <button
           class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center hover:bg-white transition-colors"
           @click.stop="nextImage">
-          <UIcon name="i-lucide-chevron-right" class="size-5 text-neutral-700" />
+          <UIcon name="i-lucide-chevron-right" class="size-5 text-slate-700" />
         </button>
 
         <button
           class="absolute top-3 right-3 bg-white rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-md hover:shadow-lg transition-shadow text-sm font-medium"
           @click.stop>
-          <UIcon name="i-lucide-heart" class="size-4 text-neutral-600" />
-          <span class="hidden sm:inline text-neutral-700">Add to Wishlist</span>
+          <UIcon name="i-lucide-heart" class="size-4 text-slate-600" />
+          <span class="hidden sm:inline text-slate-700">Add to Wishlist</span>
         </button>
 
         <div class="lg:hidden absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full">

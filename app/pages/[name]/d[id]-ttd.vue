@@ -126,7 +126,7 @@ useHead({ title: () => `${displayName.value} - Things to Do` });
 
           <main class="w-full">
             <div v-if="status === 'pending'" class="py-12 flex justify-center">
-              <UIcon name="i-lucide-loader-2" class="animate-spin size-8 text-neutral-500" />
+              <UIcon name="i-lucide-loader-2" class="animate-spin size-8 text-slate-500" />
             </div>
 
             <div v-else-if="status === 'error'" class="py-12 text-center text-red-500">
@@ -134,8 +134,8 @@ useHead({ title: () => `${displayName.value} - Things to Do` });
               <p class="text-sm mt-2">{{ error?.message }}</p>
             </div>
 
-            <div v-else-if="!products.length" class="py-12 text-center text-neutral-500">
-              <UIcon name="i-lucide-search-x" class="size-12 mx-auto mb-4 text-neutral-300" />
+            <div v-else-if="!products.length" class="py-12 text-center text-slate-500">
+              <UIcon name="i-lucide-search-x" class="size-12 mx-auto mb-4 text-slate-300" />
               <p class="text-lg">No activities found matching your criteria.</p>
               <UButton variant="link" color="neutral" @click="resetFilters">
                 Clear Filters

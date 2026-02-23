@@ -23,7 +23,7 @@ const currentIndex = ref(0);
 </script>
 
 <template>
-  <section class="relative">
+  <section class="relative overflow-visible">
     <UCarousel v-slot="{ item, index }" :items="heroSlides" loop dots fade :duration="50" :autoplay="{ delay: 5000 }"
       :ui="{
         item: 'basis-full',
@@ -37,7 +37,8 @@ const currentIndex = ref(0);
       </div>
     </UCarousel>
 
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-white pointer-events-none">
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center text-white pointer-events-none overflow-visible">
       <h1 class="text-5xl md:text-6xl font-bold mb-3 text-center">
         Explore the world
       </h1>

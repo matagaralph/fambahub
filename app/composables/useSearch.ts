@@ -8,6 +8,15 @@ export interface SearchSuggestion {
   url: string;
 }
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
 export function useSearch() {
   const searchTerm = ref("");
   const isLoading = ref(false);
@@ -57,7 +66,7 @@ export function useSearch() {
             name: dest.name,
             subtitle: dest.parentDestinationName || "Destination",
             type: "destination",
-            url: dest.url,
+            url: `/${slugify(dest.name)}/d${dest.id}-ttd`,
           });
         }
       }
@@ -70,7 +79,7 @@ export function useSearch() {
             name: attr.name,
             subtitle: attr.destinationName || "Attraction",
             type: "attraction",
-            url: attr.url,
+            url: `/${slugify(attr.destinationName || attr.name)}/d${attr.primaryDestinationId}-ttd`,
           });
         }
       }

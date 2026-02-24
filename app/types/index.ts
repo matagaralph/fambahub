@@ -85,3 +85,8 @@ export interface Product {
   productUrl?: string;
   flags?: string[];
 }
+
+export interface ProductSearchResponse {
+  totalCount: number;
+  products: Product[];
+}

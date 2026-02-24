@@ -19,7 +19,8 @@ const sortOptions = [
 <template>
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
     <div class="text-sm font-bold text-slate-900 flex items-center gap-2">
-      {{ count }} results<span v-if="page > 1" class="font-normal text-slate-500">&middot; Page {{ page }}</span>
+      {{ count.toLocaleString() }} results<span v-if="page > 1" class="font-normal text-slate-500">&middot; Page {{ page
+      }}</span>
       <span class="text-xs font-normal text-slate-500 border-l border-slate-300 pl-2">translated by Google</span>
     </div>
     <div class="flex items-center gap-2 self-end sm:self-auto">

@@ -53,7 +53,7 @@ const isBestSeller = computed(() => hasFlag("BEST_SELLER"));
 
 <template>
   <div
-    class="group flex flex-col bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full relative cursor-pointer">
+    class="group flex flex-col bg-white border border-slate-200 rounded-sm overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full relative cursor-pointer">
     <NuxtLink :to="productLink" class="relative aspect-3/2 overflow-hidden bg-slate-100 block">
       <img v-if="coverImage" :src="coverImage" :alt="product.title"
         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
@@ -91,7 +91,7 @@ const isBestSeller = computed(() => hasFlag("BEST_SELLER"));
         <span class="text-xs text-slate-600 flex items-center gap-1">
           <span class="font-semibold text-slate-900">{{
             rating.toFixed(1)
-            }}</span>
+          }}</span>
           <UIcon name="i-lucide-dot" class="size-3.5 text-slate-400" />
           <span class="text-slate-500">{{ reviewCount.toLocaleString() }} reviews</span>
         </span>

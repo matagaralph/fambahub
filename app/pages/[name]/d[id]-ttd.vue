@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { addDays, format } from "date-fns";
-import type { Product } from "~/types";
+import type { ProductSearchResponse } from "~/types";
 
 const route = useRoute("name-did-ttd");
 const destinationId = computed(() => Number(route.params.id));
@@ -79,36 +79,23 @@ const payload = computed(() => ({
     rating: { from: minRating.value, to: 5 },
   },
   sorting: sortParams.value,
-  pagination: { start: (page.value - 1) * PAGE_SIZE + 1, count: PAGE_SIZE },
+  pagination: { start: (page.value - 1) * PAGE_SIZE + 1, count: 10000 },
   currency: "USD",
 }));
 
-const { data, status, error } = await useFetch<Product[]>(
+const { data, status, error } = await useFetch<ProductSearchResponse>(
   "https://api.fambahub.com/products/search",
   { method: "POST", body: payload, watch: [payload] },
 );
 
-const products = computed<Product[]>(() =>
-  Array.isArray(data.value) ? data.value : [],
-);
-
-const hasNextPage = computed(() => products.value.length === PAGE_SIZE);
+const products = computed(() => data.value?.products ?? []);
+const totalCount = computed(() => data.value?.totalCount ?? 0);
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function nextPage() {
-  page.value++;
-  scrollToTop();
-}
-
-function prevPage() {
-  if (page.value > 1) {
-    page.value--;
-    scrollToTop();
-  }
-}
+watch(page, () => scrollToTop());
 
 useHead({ title: () => `${displayName.value} - Things to Do` });
 </script>
@@ -122,7 +109,7 @@ useHead({ title: () => `${displayName.value} - Things to Do` });
           v-model:selected-durations="durations" @reset="resetFilters" />
 
         <div class="flex-1 flex flex-col gap-6">
-          <SearchResultsBar v-model:selected-sort="sort" :count="products.length" :page="page" />
+          <SearchResultsBar v-model:selected-sort="sort" :count="totalCount" :page="page" />
 
           <main class="w-full">
             <div v-if="status === 'pending'" class="py-12 flex justify-center">
@@ -146,7 +133,7 @@ useHead({ title: () => `${displayName.value} - Things to Do` });
               <ProductCard v-for="product in products" :key="product.productCode" :product="product" />
             </div>
 
-            <SearchPagination :page="page" :has-next-page="hasNextPage" @next="nextPage" @prev="prevPage" />
+            <SearchPagination v-model:page="page" :total="totalCount" :items-per-page="PAGE_SIZE" />
           </main>
         </div>
       </div>

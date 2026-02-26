@@ -17,7 +17,7 @@ function slugify(text: string): string {
     .replace(/-+/g, "-");
 }
 
-export function useSearch() {
+export function useSearch(currency = "USD") {
   const searchTerm = ref("");
   const isLoading = ref(false);
   const suggestions = ref<SearchSuggestion[]>([]);
@@ -51,7 +51,7 @@ export function useSearch() {
                 pagination: { start: 1, count: 5 },
               },
             ],
-            currency: "USD",
+            currency,
           },
         },
       );

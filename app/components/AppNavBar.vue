@@ -7,7 +7,19 @@ const isHome = computed(() => route.path === '/')
 const locales = { en, zh_cn, nl, fr, de, it, ja, pt, ru, es }
 const locale = ref('en')
 
+
+import CurrencyDialog from './CurrencyDialog.vue'
+
 const avatarOpen = ref(false)
+const currencyDialogOpen = ref(false)
+const selectedCurrency = ref('USD')
+
+function handleCurrencySelect(code: string) {
+  selectedCurrency.value = code;
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('currency-change', { detail: { code } }));
+  }
+}
 
 </script>
 
@@ -38,7 +50,17 @@ const avatarOpen = ref(false)
           <a class="text-sm/6 text-slate-950" href="#">List your place</a>
           <a class="text-sm/6 text-slate-950" href="/support">Support</a>
 
-          <ULocaleSelect v-model="locale" :locales="Object.values(locales)" class="w-40 " />
+
+          <ULocaleSelect v-model="locale" :locales="Object.values(locales)" class="w-40" />
+
+          <button
+            class="flex items-center gap-2 px-3 py-1.5 border border-slate-200 rounded-lg hover:bg-slate-50 transition"
+            aria-label="Select currency" @click="currencyDialogOpen = true">
+            <UIcon name="i-lucide-coins" class="size-4 text-slate-500" />
+            <span class="text-sm text-slate-950">{{ selectedCurrency }}</span>
+          </button>
+
+          <CurrencyDialog v-model:show="currencyDialogOpen" @select="handleCurrencySelect" />
 
           <div class="relative">
             <button type="button" class="flex items-center" @click="avatarOpen = !avatarOpen">

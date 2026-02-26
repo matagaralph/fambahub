@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Product } from "~/types";
 
-const props = defineProps<{ product: Product }>();
+const props = defineProps<{ product: Product; currency?: string }>();
 const route = useRoute();
 
 const productLink = computed(() => {
@@ -16,21 +16,23 @@ const coverImage = computed(() => {
   return source?.variants?.find((v) => v.width >= 400)?.url ?? source?.variants?.[0]?.url ?? null;
 });
 
-const priceFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0,
-});
+const priceFormatter = computed(() =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: props.currency || "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })
+);
 
 const formattedPrice = computed(() => {
   const price = props.product.pricing?.summary?.fromPrice;
-  return price ? priceFormatter.format(price) : null;
+  return price ? priceFormatter.value.format(price) : null;
 });
 
 const formattedOldPrice = computed(() => {
   const price = props.product.pricing?.summary?.fromPriceBeforeDiscount;
-  return price ? priceFormatter.format(price) : null;
+  return price ? priceFormatter.value.format(price) : null;
 });
 
 const durationText = computed(() => {
@@ -91,7 +93,7 @@ const isBestSeller = computed(() => hasFlag("BEST_SELLER"));
         <span class="text-xs text-slate-600 flex items-center gap-1">
           <span class="font-semibold text-slate-900">{{
             rating.toFixed(1)
-          }}</span>
+            }}</span>
           <UIcon name="i-lucide-dot" class="size-3.5 text-slate-400" />
           <span class="text-slate-500">{{ reviewCount.toLocaleString() }} reviews</span>
         </span>

@@ -135,7 +135,7 @@ const maxReviewCount = computed(() => {
           <div v-if="reviewCount > 0" class="flex items-center gap-1.5">
             <div class="flex">
               <UIcon v-for="i in 5" :key="i" name="i-lucide-star" class="size-4" :class="i <= Math.round(rating)
-                ? 'text-primary-500'
+                ? 'text-amber-400'
                 : 'text-neutral-300'
                 " />
             </div>
@@ -320,7 +320,7 @@ const maxReviewCount = computed(() => {
                   </div>
                   <div class="flex justify-center md:justify-start mt-1">
                     <UIcon v-for="i in 5" :key="i" name="i-lucide-star" class="size-4" :class="i <= Math.round(rating)
-                      ? 'text-primary-500'
+                      ? 'text-amber-400'
                       : 'text-neutral-300'
                       " />
                   </div>
@@ -335,7 +335,7 @@ const maxReviewCount = computed(() => {
                     <span class="w-4 text-right text-neutral-600 font-medium">
                       {{ item.rating }}
                     </span>
-                    <UIcon name="i-lucide-star" class="size-3.5 text-primary-500" />
+                    <UIcon name="i-lucide-star" class="size-3.5 text-amber-400" />
                     <div class="flex-1 h-3 bg-neutral-100 rounded-full overflow-hidden">
                       <div class="h-full bg-primary-500 rounded-full transition-all" :style="{
                         width: `${(item.count / maxReviewCount) * 100}%`,

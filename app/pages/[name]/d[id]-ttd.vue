@@ -10,6 +10,7 @@ const displayName = computed(() => {
   return name.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 });
 
+
 const sort = ref("DEFAULT");
 const page = ref(1);
 const startDate = new Date(2026, 1, 25);
@@ -20,6 +21,17 @@ const specials = ref<string[]>([]);
 const minRating = ref(0);
 const timeOfDay = ref<string[]>([]);
 const durations = ref<string[]>([]);
+
+// Currency state (global or via inject/provide in real app)
+const currency = ref('USD');
+
+// Listen for currency changes from NavBar (simple event bus or provide/inject for demo)
+if (typeof window !== 'undefined') {
+  window.addEventListener('currency-change', (e: Event) => {
+    const customEvent = e as CustomEvent<{ code: string }>;
+    if (customEvent.detail && customEvent.detail.code) currency.value = customEvent.detail.code;
+  });
+}
 
 const DURATION_RANGES: Record<string, { from: number; to: number }> = {
   "up-to-1h": { from: 0, to: 60 },
@@ -80,7 +92,7 @@ const payload = computed(() => ({
   },
   sorting: sortParams.value,
   pagination: { start: (page.value - 1) * PAGE_SIZE + 1, count: 10000 },
-  currency: "USD",
+  currency: currency.value,
 }));
 
 const { data, status, error } = await useFetch<ProductSearchResponse>(
@@ -130,7 +142,8 @@ useHead({ title: () => `${displayName.value} - Things to Do` });
             </div>
 
             <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <ProductCard v-for="product in products" :key="product.productCode" :product="product" />
+              <ProductCard v-for="product in products" :key="product.productCode" :product="product"
+                :currency="currency" />
             </div>
 
             <SearchPagination v-model:page="page" :total="totalCount" :items-per-page="PAGE_SIZE" />

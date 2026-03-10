@@ -14,7 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <head></head>
+      <head>
+        <link rel='preconnect' href='https://rsms.me/' />
+        <link rel='stylesheet' href='https://rsms.me/inter/inter.css' />
+      </head>
       <body className={`font-default antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

@@ -9,16 +9,29 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@circulo-ai/di": "^3.1.0",
+    "@libsql/client": "^0.17.0",
+    "@primer/octicons-react": "^19.22.0",
+    "@primer/primitives": "^11.5.1",
+    "@primer/react": "^38.14.0",
+    "@tailwindplus/elements": "^1.0.22",
+    "@tanstack/react-query": "^5.90.21",
+    "drizzle-orm": "^0.45.1",
+    "hono": "^4.12.5",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "ulid": "^3.0.2",
+    "xior": "^0.8.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/bun": "^1.3.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "drizzle-kit": "^0.31.9",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
@@ -29,6 +42,7 @@
     "unrs-resolver"
   ],
   "trustedDependencies": [
+    "esbuild",
     "sharp",
     "unrs-resolver"
   ]

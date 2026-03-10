@@ -9,9 +9,12 @@ import {
 import { ElDropdown, ElMenu } from '@tailwindplus/elements/react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Button, TextInput } from '@primer/react';
 
 export default function NavBar() {
+  const pathname = usePathname();
+  const isHome = pathname === '/';
   return (
     <div className='flex items-center px-4 lg:px-6 h-14 min-w-0 border-b border-default'>
       <div className='h-full relative flex-1 flex items-center gap-x-4 min-w-0'>
@@ -23,14 +26,16 @@ export default function NavBar() {
           </Link>
           <div className='hidden lg:flex items-center gap-x-2' />
         </div>
-        <div className='relative hidden lg:flex items-center flex-1 z-20 justify-center'>
-          <TextInput
-            leadingVisual={SearchIcon}
-            placeholder='Search for a place or activity'
-            aria-label='Search for a place or activity'
-            className='w-full h-9! rounded-xl! bg-background-light! ring-1! ring-gray-400/30! hover:!ring-gray-600/30 !border-none !shadow-none'
-          />
-        </div>
+        {!isHome && (
+          <div className='relative hidden lg:flex itemxs-center flex-1 z-20 justify-center'>
+            <TextInput
+              leadingVisual={SearchIcon}
+              placeholder='Search for a place or activity'
+              aria-label='Search for a place or activity'
+              className='w-full h-9! rounded-xl! bg-background-light! ring-1! ring-gray-400/30! hover:!ring-gray-600/30 !border-none !shadow-none'
+            />
+          </div>
+        )}
         <div className='flex-1 relative hidden lg:flex items-center ml-auto justify-end space-x-4'>
           <nav className='text-sm'>
             <ul className='flex space-x-6 items-center'>

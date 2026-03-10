@@ -5,22 +5,71 @@ import {
   SyncIcon,
   XIcon,
 } from '@primer/octicons-react';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
+
+function useDebounced<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState<T>(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+}
+
+async function fetchResults(searchTerm: string, currencyCode: string = 'USD') {
+  const res = await fetch('/api/auxiliary/search/freetext', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      searchTerm,
+      currency: currencyCode,
+      searchTypes: [
+        {
+          searchType: 'ATTRACTIONS',
+          pagination: { start: 1, count: 3 },
+        },
+        {
+          searchType: 'DESTINATIONS',
+          pagination: { start: 1, count: 4 },
+        },
+      ],
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch results');
+  }
+
+  return res.json();
+}
 
 export default function HeroSearch() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const debouncedSearchTerm = useDebounced(searchTerm, 400);
 
-  const onInput = (e) => setSearchTerm(e.target.value);
+  const onInput = (e: any) => setSearchTerm(e.target.value);
   const clearSearch = () => setSearchTerm('');
 
   const onFocus = () => {
     // handle focus if needed
   };
 
-  const onKeydown = (e) => {
+  const onKeydown = (e: any) => {
     // handle key events if needed
   };
+
+  const { data, isFetching } = useQuery({
+    queryKey: ['search', debouncedSearchTerm],
+    queryFn: async () => await fetchResults(debouncedSearchTerm),
+    enabled: debouncedSearchTerm.trim().length > 0,
+  });
+
+  console.log(data);
 
   return (
     <div className='w-[85vw] max-w-xl lg:max-w-3xl pointer-events-auto'>
@@ -53,13 +102,13 @@ export default function HeroSearch() {
             Search
           </div>
           <div className='flex items-center gap-2 mt-1.5 text-sm text-slate-900'>
-            {!isLoading ? (
-              <SearchIcon size={16} className='text-slate-400 shrink-0' />
-            ) : (
+            {isFetching ? (
               <SyncIcon
                 size={16}
                 className='text-slate-400 shrink-0 animate-spin'
               />
+            ) : (
+              <SearchIcon size={16} className='text-slate-400 shrink-0' />
             )}
             <input
               value={searchTerm}

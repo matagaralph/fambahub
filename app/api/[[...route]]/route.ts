@@ -3,14 +3,12 @@ import { ApiError } from '@/container/modules/httpRequest';
 import { TOKENS } from '@/container/tokens';
 import auxiliaryRoutes from '@/routes/auxiliary';
 import demandRoutes from '@/routes/demand';
+import { Time } from '@/utils/time';
 import { bindToHono } from '@circulo-ai/di';
 import { Hono } from 'hono';
-import { handle } from 'hono/vercel';
 import { rateLimiter } from 'hono-rate-limiter';
 import { requestId } from 'hono/request-id';
-import { Time } from '@/utils/time';
-import { XiorError } from 'xior';
-import { error } from 'console';
+import { handle } from 'hono/vercel';
 
 const app = new Hono().basePath('/api');
 

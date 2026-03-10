@@ -1,10 +1,8 @@
 import HeroSearch from '@/components/hero-search';
 import Incentives from '@/components/incentives';
 import TagScroller from '@/components/tags-scroller';
-import { redirect } from 'next/navigation';
 
 export default function IndexPage() {
-  redirect('/sign-in');
   return (
     <>
       <div className='bg-muted px-4 pt-6 pb-12'>

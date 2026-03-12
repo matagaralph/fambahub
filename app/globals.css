@@ -30,6 +30,7 @@
   --color-success: var(--fgColor-success);
   --color-link: var(--fgColor-link);
   --color-muted: var(--fgColor-muted);
+  --color-app-gold: oklch(0.8298 0.1473 76.48);
 
   /* Borders */
   --border-color-default: var(--borderColor-default);

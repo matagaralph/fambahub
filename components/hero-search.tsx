@@ -1,102 +1,212 @@
 'use client';
+import { useDebounced } from '@/hooks/useDebounce';
 import {
-  ChevronDownIcon,
+  GlobeIcon,
   SearchIcon,
   SyncIcon,
+  TelescopeIcon,
+  ArchiveIcon,
   XIcon,
 } from '@primer/octicons-react';
+import { LiaMapSignsSolid } from 'react-icons/lia';
 import { useQuery } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { DatePickerTrigger } from './date-picker-trigger';
+import { TravellersTrigger } from './travellers-trigger';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
 
-function useDebounced<T>(value: T, delay: number): T {
-  const [debounced, setDebounced] = useState<T>(value);
+type Attraction = {
+  id: number;
+  name: string;
+  destinationName: string;
+  productsCount: number;
+  reviews: { combinedAverageRating: number; totalReviews: number };
+  url: string;
+};
 
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(timer);
-  }, [value, delay]);
+type Destination = {
+  id: number;
+  name: string;
+  parentDestinationName: string;
+  url: string;
+};
 
-  return debounced;
+type SearchResults = {
+  attractions?: { results: Attraction[]; totalCount: number };
+  destinations?: { results: Destination[]; totalCount: number };
+};
+
+type ResultItem =
+  | { kind: 'destination'; data: Destination }
+  | { kind: 'attraction'; data: Attraction }
+  | { kind: 'search'; term: string };
+
+const TARGET_TOTAL = 7;
+const DEFAULT_DESTINATIONS = 4;
+const DEFAULT_ATTRACTIONS = 3;
+
+function allocateCounts(
+  destTotal: number,
+  attrTotal: number,
+): { destCount: number; attrCount: number } {
+  let destCount = Math.min(destTotal, DEFAULT_DESTINATIONS);
+  let attrCount = Math.min(attrTotal, DEFAULT_ATTRACTIONS);
+  const remainder = TARGET_TOTAL - destCount - attrCount;
+
+  if (remainder > 0) {
+    if (destCount < destTotal) {
+      destCount += Math.min(remainder, destTotal - destCount);
+    } else if (attrCount < attrTotal) {
+      attrCount += Math.min(remainder, attrTotal - attrCount);
+    }
+  }
+
+  return { destCount, attrCount };
 }
 
-async function fetchResults(searchTerm: string, currencyCode: string = 'USD') {
+async function fetchResults(
+  searchTerm: string,
+  currencyCode = 'USD',
+): Promise<SearchResults> {
   const res = await fetch('/api/auxiliary/search/freetext', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       searchTerm,
       currency: currencyCode,
       searchTypes: [
         {
           searchType: 'ATTRACTIONS',
-          pagination: { start: 1, count: 3 },
+          pagination: { start: 1, count: TARGET_TOTAL },
         },
         {
           searchType: 'DESTINATIONS',
-          pagination: { start: 1, count: 4 },
+          pagination: { start: 1, count: TARGET_TOTAL },
         },
       ],
     }),
   });
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch results');
-  }
-
+  if (!res.ok) throw new Error('Failed to fetch results');
   return res.json();
+}
+
+type ResultRowProps = {
+  icon: React.ReactNode;
+  label: string;
+  sublabel: string;
+  isFocused: boolean;
+  onFocus: () => void;
+  onClick: () => void;
+};
+
+function ResultRow({
+  icon,
+  label,
+  sublabel,
+  isFocused,
+  onFocus,
+  onClick,
+}: ResultRowProps) {
+  return (
+    <button
+      role='option'
+      aria-selected={isFocused}
+      onClick={onClick}
+      onMouseEnter={onFocus}
+      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+        isFocused ? 'bg-slate-50' : 'bg-white'
+      }`}
+    >
+      <span>{icon}</span>
+      {/* <span
+        className={`shrink-0 flex items-center justify-center w-8 h-8 rounded-full transition-colors ${
+          isFocused
+            ? 'bg-slate-200 text-slate-600'
+            : 'bg-slate-100 text-slate-500'
+        }`}
+      >
+        {icon}
+      </span> */}
+      <div className='min-w-0'>
+        <p className='text-sm font-medium text-default truncate'>{label}</p>
+        <p className='text-xs text-muted truncate'>{sublabel}</p>
+      </div>
+    </button>
+  );
 }
 
 export default function HeroSearch() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const debouncedSearchTerm = useDebounced(searchTerm, 400);
-
-  const onInput = (e: any) => setSearchTerm(e.target.value);
-  const clearSearch = () => setSearchTerm('');
-
-  const onFocus = () => {
-    // handle focus if needed
-  };
-
-  const onKeydown = (e: any) => {
-    // handle key events if needed
-  };
+  const inputRef = useRef<HTMLInputElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const { data, isFetching } = useQuery({
     queryKey: ['search', debouncedSearchTerm],
-    queryFn: async () => await fetchResults(debouncedSearchTerm),
+    queryFn: () => fetchResults(debouncedSearchTerm),
     enabled: debouncedSearchTerm.trim().length > 0,
   });
 
-  console.log(data);
+  const destTotal = data?.destinations?.totalCount ?? 0;
+  const attrTotal = data?.attractions?.totalCount ?? 0;
+  const { destCount, attrCount } = allocateCounts(destTotal, attrTotal);
+
+  const destinations = data?.destinations?.results?.slice(0, destCount) ?? [];
+  const attractions = data?.attractions?.results?.slice(0, attrCount) ?? [];
+  const hasResults = destinations.length > 0 || attractions.length > 0;
+
+  const items: ResultItem[] = [
+    ...destinations.map((d): ResultItem => ({ kind: 'destination', data: d })),
+    ...attractions.map((a): ResultItem => ({ kind: 'attraction', data: a })),
+    ...(debouncedSearchTerm.trim().length > 0
+      ? [{ kind: 'search' as const, term: debouncedSearchTerm }]
+      : []),
+  ];
+
+  const showPanel =
+    isOpen &&
+    debouncedSearchTerm.trim().length > 0 &&
+    (hasResults || !isFetching);
+
+  const handleSelect = useCallback<(item: ResultItem) => void>((item) => {
+    setIsOpen(false);
+    setFocusedIndex(-1);
+    inputRef.current?.blur();
+  }, []);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showPanel) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setFocusedIndex((i) => Math.min(i + 1, items.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setFocusedIndex((i) => Math.max(i - 1, 0));
+    } else if (e.key === 'Enter' && focusedIndex >= 0) {
+      e.preventDefault();
+      handleSelect(items[focusedIndex]);
+    } else if (e.key === 'Escape') {
+      setIsOpen(false);
+      setFocusedIndex(-1);
+      inputRef.current?.blur();
+    }
+  };
 
   return (
-    <div className='w-[85vw] max-w-xl lg:max-w-3xl pointer-events-auto'>
+    <div
+      ref={wrapperRef}
+      className='relative w-[85vw] max-w-xl lg:max-w-3xl pointer-events-auto'
+    >
       <div className='border border-default rounded-xl overflow-hidden bg-white'>
-        {/* Date and Travelers */}
         <div className='grid grid-cols-2 divide-x divide-slate-300'>
-          <div className='p-2'>
-            <div className='text-xs font-semibold text-slate-500 uppercase tracking-wide'>
-              Date
-            </div>
-            <div className='flex items-center gap-2 mt-1.5 text-sm text-slate-900'>
-              <span>Thu, Feb 26</span>
-              <ChevronDownIcon size={16} className='ml-auto text-slate-400' />
-            </div>
-          </div>
-          <div className='p-2'>
-            <div className='text-xs font-semibold text-slate-500 uppercase tracking-wide'>
-              Travelers
-            </div>
-            <div className='flex items-center gap-2 mt-1.5 text-sm text-slate-900'>
-              <span>2 travellers, 1 Room</span>
-              <ChevronDownIcon size={16} className='ml-auto text-slate-400' />
-            </div>
-          </div>
+          <DatePickerTrigger />
+          <TravellersTrigger />
         </div>
 
-        {/* Search Input */}
         <div className='border-t border-slate-300 p-2'>
           <div className='text-xs font-semibold text-slate-500 uppercase tracking-wide'>
             Search
@@ -111,16 +221,38 @@ export default function HeroSearch() {
               <SearchIcon size={16} className='text-slate-400 shrink-0' />
             )}
             <input
+              ref={inputRef}
+              role='combobox'
+              aria-expanded={showPanel}
+              aria-autocomplete='list'
               value={searchTerm}
               type='text'
               placeholder='Search for a place or activity'
               className='bg-transparent text-sm text-default placeholder-slate-400 outline-none w-full'
-              onChange={onInput}
-              onFocus={onFocus}
-              onKeyDown={onKeydown}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setFocusedIndex(-1);
+                setIsOpen(true);
+              }}
+              onFocus={() => setIsOpen(true)}
+              onBlur={(e) => {
+                if (!wrapperRef.current?.contains(e.relatedTarget as Node)) {
+                  setIsOpen(false);
+                  setFocusedIndex(-1);
+                }
+              }}
+              onKeyDown={handleKeyDown}
             />
             {searchTerm && (
-              <button className='shrink-0' onClick={clearSearch}>
+              <button
+                tabIndex={-1}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setSearchTerm('');
+                  setFocusedIndex(-1);
+                  inputRef.current?.focus();
+                }}
+              >
                 <XIcon
                   size={16}
                   className='text-slate-400 hover:text-slate-600'
@@ -130,6 +262,78 @@ export default function HeroSearch() {
           </div>
         </div>
       </div>
+
+      {showPanel && (
+        <div className='absolute top-full left-0 right-0 mt-2 z-50 rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden'>
+          <div role='listbox' className='divide-y divide-muted'>
+            {destinations.map((dest, i) => (
+              <ResultRow
+                key={`dest-${dest.id}`}
+                icon={
+                  <HiOutlineLocationMarker className='size-6 text-app-gold' />
+                }
+                label={dest.name}
+                sublabel={dest.parentDestinationName}
+                isFocused={focusedIndex === i}
+                onFocus={() => setFocusedIndex(i)}
+                onClick={() =>
+                  handleSelect({ kind: 'destination', data: dest })
+                }
+              />
+            ))}
+
+            {attractions.map((attr, i) => {
+              const index = destinations.length + i;
+              return (
+                <ResultRow
+                  key={`attr-${attr.id}`}
+                  icon={<LiaMapSignsSolid className='size-6 text-app-gold' />}
+                  label={attr.name}
+                  sublabel={attr.destinationName}
+                  isFocused={focusedIndex === index}
+                  onFocus={() => setFocusedIndex(index)}
+                  onClick={() =>
+                    handleSelect({ kind: 'attraction', data: attr })
+                  }
+                />
+              );
+            })}
+
+            {!isFetching && !hasResults && (
+              <div className='px-4 py-3 text-sm text-center text-muted'>
+                No results for &quot;{debouncedSearchTerm}&quot;
+              </div>
+            )}
+
+            {debouncedSearchTerm.trim().length > 0 && (
+              <button
+                tabIndex={-1}
+                className={`w-full flex items-center gap-3 px-4 py-3 border-t border-slate-100 text-left transition-colors ${
+                  focusedIndex === items.length - 1
+                    ? 'bg-slate-50'
+                    : 'bg-white hover:bg-slate-50'
+                }`}
+                onMouseEnter={() => setFocusedIndex(items.length - 1)}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleSelect({ kind: 'search', term: debouncedSearchTerm });
+                }}
+              >
+                <SearchIcon className='shrink-0 size-5 text-app-gold' />
+                {/* <span className='shrink-0 flex items-center justify-center text-app-gold w-8 h-8 rounded-full'>
+                
+                </span> */}
+                <p className='text-sm text-slate-600'>
+                  Search for
+                  <span className='font-medium mx-1 text-slate-900'>
+                    &quot;{debouncedSearchTerm}&quot;
+                  </span>
+                </p>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

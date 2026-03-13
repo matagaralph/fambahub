@@ -1,40 +1,13 @@
 'use client';
 import { useDebounced } from '@/hooks/useDebounce';
-import {
-  GlobeIcon,
-  SearchIcon,
-  SyncIcon,
-  TelescopeIcon,
-  ArchiveIcon,
-  XIcon,
-} from '@primer/octicons-react';
-import { LiaMapSignsSolid } from 'react-icons/lia';
+import { SearchIcon, SyncIcon, XIcon } from '@primer/octicons-react';
+import { VscSync } from 'react-icons/vsc';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useRef, useState } from 'react';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { LiaMapSignsSolid } from 'react-icons/lia';
 import { DatePickerTrigger } from './date-picker-trigger';
 import { TravellersTrigger } from './travellers-trigger';
-import { HiOutlineLocationMarker } from 'react-icons/hi';
-
-type Attraction = {
-  id: number;
-  name: string;
-  destinationName: string;
-  productsCount: number;
-  reviews: { combinedAverageRating: number; totalReviews: number };
-  url: string;
-};
-
-type Destination = {
-  id: number;
-  name: string;
-  parentDestinationName: string;
-  url: string;
-};
-
-type SearchResults = {
-  attractions?: { results: Attraction[]; totalCount: number };
-  destinations?: { results: Destination[]; totalCount: number };
-};
 
 type ResultItem =
   | { kind: 'destination'; data: Destination }
@@ -171,7 +144,7 @@ export default function HeroSearch() {
     debouncedSearchTerm.trim().length > 0 &&
     (hasResults || !isFetching);
 
-  const handleSelect = useCallback<(item: ResultItem) => void>((item) => {
+  const handleSelect = useCallback<(item: ResultItem) => void>(() => {
     setIsOpen(false);
     setFocusedIndex(-1);
     inputRef.current?.blur();
@@ -213,15 +186,13 @@ export default function HeroSearch() {
           </div>
           <div className='flex items-center gap-2 mt-1.5 text-sm text-slate-900'>
             {isFetching ? (
-              <SyncIcon
-                size={16}
-                className='text-slate-400 shrink-0 animate-spin'
-              />
+              <VscSync className='text-slate-400 size-5 shrink-0 animate-spin' />
             ) : (
               <SearchIcon size={16} className='text-slate-400 shrink-0' />
             )}
             <input
               ref={inputRef}
+              // eslint-disable-next-line jsx-a11y/role-has-required-aria-props
               role='combobox'
               aria-expanded={showPanel}
               aria-autocomplete='list'

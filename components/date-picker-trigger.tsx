@@ -7,7 +7,7 @@ export function DatePickerTrigger() {
         Date
       </div>
       <div className='flex items-center gap-2 mt-1.5 text-sm text-slate-900'>
-        <span>Thu, Feb 26</span>
+        <span>Fri, March 27</span>
         <ChevronDownIcon size={16} className='ml-auto text-slate-400' />
       </div>
     </div>

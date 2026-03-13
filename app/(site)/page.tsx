@@ -1,5 +1,4 @@
 import HeroSearch from '@/components/hero-search';
-import Incentives from '@/components/incentives';
 import TagScroller from '@/components/tags-scroller';
 
 export default function IndexPage() {
@@ -11,7 +10,7 @@ export default function IndexPage() {
           <HeroSearch />
         </div>
       </div>
-      <Incentives />
+      {/* <Incentives />   */}
     </>
   );
 }

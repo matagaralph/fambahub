@@ -48,6 +48,8 @@ export default function TagScroller({ bgColor = '#f6f6f6' }: TagScrollerProps) {
     queryFn: fetchTags,
   });
 
+  console.log(selected);
+
   const updateScrollState = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;

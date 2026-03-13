@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Button, TextInput } from '@primer/react';
+import { CurrencySelector } from './ui/currency-selector';
 
 export default function NavBar() {
   const pathname = usePathname();
@@ -58,7 +59,7 @@ export default function NavBar() {
                 </a>
               </li>
               <li>
-                <Button>USD</Button>
+                <CurrencySelector />
               </li>
               <li className='flex items-center'>
                 <ElDropdown className='inline-block'>

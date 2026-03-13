@@ -46,6 +46,8 @@ export default function TagScroller({ bgColor = '#f6f6f6' }: TagScrollerProps) {
   } = useQuery({
     queryKey: ['tags'],
     queryFn: fetchTags,
+    staleTime: 1000 * 60 * 60,
+    gcTime: 1000 * 60 * 60 * 24,
   });
 
   console.log(selected);

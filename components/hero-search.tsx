@@ -1,9 +1,10 @@
 'use client';
 import { useDebounced } from '@/hooks/useDebounce';
-import { SearchIcon, SyncIcon, XIcon } from '@primer/octicons-react';
+import { SearchIcon, XIcon } from '@primer/octicons-react';
 import { VscSync } from 'react-icons/vsc';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { LiaMapSignsSolid } from 'react-icons/lia';
 import { DatePickerTrigger } from './date-picker-trigger';
@@ -123,6 +124,8 @@ export default function HeroSearch() {
     enabled: debouncedSearchTerm.trim().length > 0,
   });
 
+  const router = useRouter();
+
   const destTotal = data?.destinations?.totalCount ?? 0;
   const attrTotal = data?.attractions?.totalCount ?? 0;
   const { destCount, attrCount } = allocateCounts(destTotal, attrTotal);
@@ -144,11 +147,25 @@ export default function HeroSearch() {
     debouncedSearchTerm.trim().length > 0 &&
     (hasResults || !isFetching);
 
-  const handleSelect = useCallback<(item: ResultItem) => void>(() => {
-    setIsOpen(false);
-    setFocusedIndex(-1);
-    inputRef.current?.blur();
-  }, []);
+  const handleSelect = useCallback(
+    (item: ResultItem) => {
+      setIsOpen(false);
+      setFocusedIndex(-1);
+      inputRef.current?.blur();
+
+      if (item.kind === 'destination' || item.kind === 'attraction') {
+        const name = item.data.name || '';
+        const slug = name.trim().replace(/\s+/g, '-');
+        router.push(`/${slug}/${item.data.id}`);
+        return;
+      }
+
+      if (item.kind === 'search') {
+        router.push(`/search?term=${encodeURIComponent(item.term)}`);
+      }
+    },
+    [router],
+  );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!showPanel) return;

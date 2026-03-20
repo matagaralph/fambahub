@@ -13,7 +13,11 @@ import { usePathname } from 'next/navigation';
 import { Button, TextInput } from '@primer/react';
 import { CurrencySelector } from './ui/currency-selector';
 
-export default function NavBar() {
+export default function NavBar({
+  initialCurrency = 'USD',
+}: {
+  initialCurrency?: string;
+}) {
   const pathname = usePathname();
   const isHome = pathname === '/';
   return (
@@ -59,7 +63,7 @@ export default function NavBar() {
                 </a>
               </li>
               <li>
-                <CurrencySelector />
+                <CurrencySelector initialCurrency={initialCurrency} />
               </li>
               <li className='flex items-center'>
                 <ElDropdown className='inline-block'>

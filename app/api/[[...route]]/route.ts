@@ -6,6 +6,7 @@ import demandRoutes from '@/routes/demand';
 import { Time } from '@/utils/time';
 import { bindToHono } from '@circulo-ai/di';
 import { Hono } from 'hono';
+import { setCookie } from 'hono/cookie';
 import { rateLimiter } from 'hono-rate-limiter';
 import { requestId } from 'hono/request-id';
 import { handle } from 'hono/vercel';
@@ -45,10 +46,21 @@ app.onError((err, c) => {
 app.route('/auxiliary', auxiliaryRoutes);
 app.route('/demand', demandRoutes);
 
-// app.get('/hello', async (c) => {
-//   return c.json({ message: 'Hello' });
-// });
+app.post('/preferences/currency', async (c) => {
+  const { currency } = await c.req.json();
+  if (!currency) return c.json({ message: 'Invalid currency' }, 400);
 
+  setCookie(c, 'fhub-currency', currency, {
+    path: '/',
+    // secure: true,
+    // domain: 'example.com',
+    httpOnly: false,
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: 'Strict',
+  });
+
+  return c.body(null, 204);
+});
 // showRoutes(app, {
 //   verbose: true,
 // });

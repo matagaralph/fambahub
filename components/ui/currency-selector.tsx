@@ -6,15 +6,24 @@ import { CURRENCIES } from '@/data/currencies';
 
 const SUGGESTED = ['USD', 'ZAR', 'THB', 'EUR', 'INR'];
 
-export function CurrencySelector() {
+export function CurrencySelector({
+  initialCurrency = 'USD',
+}: {
+  initialCurrency?: string;
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState('USD');
+  const [selected, setSelected] = useState(initialCurrency);
 
   const suggested = CURRENCIES.filter((c) => SUGGESTED.includes(c.code));
   const all = [...CURRENCIES].sort((a, b) => a.name.localeCompare(b.name));
 
   const select = (code: string) => {
     setSelected(code);
+    fetch('/api/preferences/currency', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currency: code }),
+    });
     setIsOpen(false);
   };
 

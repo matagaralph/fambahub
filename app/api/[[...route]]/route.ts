@@ -52,8 +52,8 @@ app.post('/preferences/currency', async (c) => {
 
   setCookie(c, 'fhub-currency', currency, {
     path: '/',
-    // secure: true,
-    // domain: 'example.com',
+    secure: true,
+    domain: 'fambahub.com',
     httpOnly: false,
     maxAge: 60 * 60 * 24 * 365,
     sameSite: 'Strict',

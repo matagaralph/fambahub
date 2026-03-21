@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import SearchResults from './search-bar';
 
 type Params = {
   name: string | string[];
@@ -14,12 +15,14 @@ export default async function GetProductsPage({ params }: Props) {
   const cookieStore = await cookies();
   const currency = cookieStore.get('fhub-currency')?.value ?? 'USD';
 
-  const slug = Array.isArray(name) ? name.join('/') : (name ?? '');
-  const destinationName = decodeURIComponent(slug).replace(/-/g, ' ').trim();
+  // const slug = Array.isArray(name) ? name.join('/') : (name ?? '');
+  // const destinationName = decodeURIComponent(slug).replace(/-/g, ' ').trim();
 
   return (
     <main className='bg-default pb-12 mx-auto max-w-7xl px-4 py-8'>
-      <div className='flex gap-8'></div>
+      <div className='flex gap-8'>
+        <SearchResults currency={currency} destination={id} />
+      </div>
     </main>
   );
 }

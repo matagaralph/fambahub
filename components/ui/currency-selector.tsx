@@ -25,6 +25,7 @@ export function CurrencySelector({
       body: JSON.stringify({ currency: code }),
     });
     setIsOpen(false);
+    window.location.reload();
   };
 
   return (

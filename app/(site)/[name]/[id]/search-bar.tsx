@@ -6,6 +6,8 @@ import { addDays, format } from 'date-fns';
 import { ProductSearchResponse } from './type';
 import { ProductCard } from '@/components/ui/product-card';
 import { Banner } from '@primer/react';
+import { SearchPagination } from '@/components/ui/search-pagination';
+import { SearchResultsHeader } from '@/components/ui/SearchResultsHeader';
 
 const DURATION_RANGES: Record<string, { from: number; to: number }> = {
   'up-to-1h': { from: 0, to: 60 },
@@ -91,29 +93,50 @@ export default function SearchResults({
   const totalCount = data?.totalCount ?? 0;
 
   return (
-    <div className=''>
+    <div className='w-full'>
+      <SearchResultsHeader
+        count={totalCount}
+        page={page}
+        selectedSort={sort}
+        onSelectedSortChange={setSort}
+      />
+      {status === 'success' && !products.length && (
+        <Banner
+          className='mb-4'
+          aria-label='No results'
+          title='No activities found'
+          description="We couldn't find any activities matching your criteria. Try adjusting your filters or expanding your search."
+          variant='info'
+        />
+      )}
+
       {error && (
         <Banner
-          aria-label='Critical'
-          title='Critical'
-          description='GitHub users are now required to enable two-factor authentication as an additional security measure.'
+          aria-label='Error'
+          title='Failed to load activities'
+          description='Something went wrong. Please try again.'
           variant='critical'
         />
       )}
-      <div className='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
-        {products.map((p) => (
-          <ProductCard product={p} key={p.productCode} slug='/' />
-        ))}
-      </div>
-      {/* <SearchPagination
-        page={page}
-        onPageChange={(p) => {
-          setPage(p);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        total={totalCount}
-        itemsPerPage={PAGE_SIZE}
-      /> */}
+
+      {status === 'success' && totalCount > 0 && (
+        <>
+          <div className='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
+            {products.map((p) => (
+              <ProductCard product={p} key={p.productCode} slug='/' />
+            ))}
+          </div>
+          <SearchPagination
+            page={page}
+            onPageChange={(p) => {
+              setPage(p);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            total={totalCount}
+            itemsPerPage={PAGE_SIZE}
+          />
+        </>
+      )}
     </div>
   );
 }

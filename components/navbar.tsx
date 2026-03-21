@@ -6,11 +6,11 @@ import {
   SearchIcon,
   SignOutIcon,
 } from '@primer/octicons-react';
+import { TextInput } from '@primer/react';
 import { ElDropdown, ElMenu } from '@tailwindplus/elements/react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Button, TextInput } from '@primer/react';
 import { CurrencySelector } from './ui/currency-selector';
 
 export default function NavBar({
@@ -90,20 +90,20 @@ export default function NavBar({
                         <PersonIcon size={16} className='text-gray-400' />
                         My Account
                       </a>
-                      <a
+                      <Link
                         href='/wishlist'
                         className='flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-hidden'
                       >
                         <HeartIcon size={16} className='text-gray-400' />
                         Wishlist
-                      </a>
-                      <a
+                      </Link>
+                      <Link
                         href='/support'
                         className='flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-hidden'
                       >
                         <QuestionIcon size={16} className='text-gray-400' />
                         Help
-                      </a>
+                      </Link>
                       <form action='#' method='POST'>
                         <button
                           type='submit'

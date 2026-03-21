@@ -11,6 +11,7 @@
   "dependencies": {
     "@circulo-ai/di": "^3.1.0",
     "@headlessui/react": "^2.2.9",
+    "@heroicons/react": "^2.2.0",
     "@libsql/client": "^0.17.0",
     "@primer/octicons-react": "^19.22.0",
     "@primer/primitives": "^11.5.1",
